@@ -17,16 +17,33 @@ const Logo = styled.div`
 `;
 
 const SlideContainer = styled.div`
+  display: flex;
   background-color: var(--grey500);
-  height: 230px;
+  aspect-ratio: 16 / 9;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const Slide = styled.div`
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  scroll-snap-align: center;
+`;
+
+const SlideContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 22px;
+  margin: 22px;
   height: calc(100% - 44px);
+  width: calc(100% - 44px);
 `;
 
 const Label = styled.p`
@@ -43,6 +60,7 @@ const Title = styled.p`
   font-size: 17px;
   color: var(--white);
   line-height: 1.4;
+  width: 100%;
 `;
 
 const Home: NextPage = () => {
@@ -54,11 +72,22 @@ const Home: NextPage = () => {
         </Header>
         <SlideContainer>
           <Slide>
-            <Label>이벤트</Label>
-            <Title>
-              아웃백 방문 인증하고 10,000원 <br />
-              할인받기
-            </Title>
+            <SlideContent>
+              <Label>이벤트</Label>
+              <Title>
+                아웃백 방문 인증하고 10,000원 <br />
+                할인받기
+              </Title>
+            </SlideContent>
+          </Slide>
+          <Slide>
+            <SlideContent>
+              <Label>이벤트</Label>
+              <Title>
+                아웃백 방문 인증하고 10,000원 <br />
+                할인받기
+              </Title>
+            </SlideContent>
           </Slide>
         </SlideContainer>
         <TabIndicator />
