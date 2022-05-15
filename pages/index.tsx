@@ -8,7 +8,7 @@ const Header = styled.header`
 
 const SlideContainer = styled.div`
   background-color: var(--grey100);
-  height: 100vh;
+  height: 230px;
 `;
 
 const TabIndicator = styled.div`

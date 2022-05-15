@@ -10,6 +10,7 @@ const NavContainer = styled.nav`
   border-top: 1px solid var(--grey100);
   position: fixed;
   bottom: 0;
+  max-width: 36rem;
 `;
 
 const ItemWrapper = styled.div`
