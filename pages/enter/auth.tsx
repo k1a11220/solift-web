@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { CTA } from "../../components/cta";
 import styled from "@emotion/styled";
-import { Header } from "../../components/header";
+import { Header } from "@components/header";
 
 const Container = styled.div`
   display: flex;
