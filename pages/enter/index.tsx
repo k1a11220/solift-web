@@ -9,6 +9,7 @@ const Container = styled.div`
   align-items: center;
   height: 100vh;
   justify-content: space-between;
+  margin: 0 22px;
 `;
 
 const ButtonDetail = styled.div`

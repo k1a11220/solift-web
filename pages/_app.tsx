@@ -8,7 +8,7 @@ const Container = styled.div`
   flex-direction: column;
   max-width: 36rem;
   margin: auto;
-  width: calc(100% - 44px);
+  width: calc(100%);
 `;
 
 function MyApp({ Component, pageProps }: AppProps) {
