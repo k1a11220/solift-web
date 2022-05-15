@@ -9,13 +9,14 @@
 
   --white: #fff;
   --black: #000;
-  --blue: #2c82ff;
+  --blue100: #c7deff;
+  --blue500: #4191fd;
   --grey50: #f2f6fa;
-  --grey100: #b0b8c1;
-  --grey200: #767e85;
+  --grey100: #edeff1;
+  --grey200: #c3c9d3;
   --grey300: #4e5968;
   --grey400: #333d4b;
-  --grey500: #191f28;
+  --grey500: #333d4b;
 
   --greyOpacity500: rgba(0, 27, 55, 0.1);
   --greyOpacity600: rgba(23, 38, 54, 0.6);
