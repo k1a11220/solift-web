@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
+import CardSm from "../card-sm";
 
 const Tabs = styled.div``;
 
@@ -79,7 +80,23 @@ const TabIndicator = () => {
 
       <TabPanels>
         {activeTab === 0 && (
-          <div key="FoR">Arma virumque cano, Troiae qui primus ab oris.</div>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+            key="FoR"
+          >
+            <CardSm />
+            <CardSm />
+            <CardSm />
+            <CardSm />
+            <CardSm />
+            <CardSm />
+            <CardSm />
+            <CardSm />
+            <CardSm />
+            <CardSm />
+            <CardSm />
+            <CardSm />
+          </div>
         )}
         {activeTab === 1 && (
           <div key="MaR">Senatus Populusque Romanusenatus</div>
