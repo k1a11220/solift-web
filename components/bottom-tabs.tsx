@@ -21,6 +21,7 @@ const ItemWrapper = styled.div`
   width: 1fr;
   padding: 8px 0;
   color: var(--grey200);
+  cursor: pointer;
 
   & svg {
     width: 24px;

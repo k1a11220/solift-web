@@ -92,7 +92,6 @@ const Home: NextPage = () => {
         </SlideContainer>
         <TabIndicator />
       </div>
-      <BottomTabs />
     </>
   );
 };

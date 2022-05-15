@@ -25,6 +25,7 @@ const Item = styled.div`
   color: var(--grey200);
   height: 100%;
   padding-bottom: 13px;
+  cursor: pointer;
 
   &:first-of-type {
     margin-left: 22px;

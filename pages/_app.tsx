@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import "../styles/styles.css";
 import type { AppProps } from "next/app";
 import styled from "@emotion/styled";
+import BottomTabs from "@components/bottom-tabs";
 
 const Container = styled.div`
   display: flex;
@@ -15,6 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Container>
       <Component {...pageProps} />
+      <BottomTabs />
     </Container>
   );
 }
