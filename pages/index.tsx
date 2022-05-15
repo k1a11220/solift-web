@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import type { NextPage } from "next";
 import BottomTabs from "../components/bottom-tabs";
+import TabIndicator from "../components/tab-indicator";
 
 const Header = styled.header`
   height: 98px;
@@ -9,11 +10,6 @@ const Header = styled.header`
 const SlideContainer = styled.div`
   background-color: var(--grey100);
   height: 230px;
-`;
-
-const TabIndicator = styled.div`
-  background-color: var(--grey200);
-  height: 50px;
 `;
 
 const Home: NextPage = () => {
