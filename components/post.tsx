@@ -3,6 +3,7 @@ import Link from "next/link";
 
 const Container = styled.div`
   background-color: var(--white);
+  cursor: pointer;
 `;
 
 const Profile = styled.div`
