@@ -6,7 +6,7 @@ const Tabs = styled.div``;
 
 const TabListWrapper = styled.div`
   background-color: var(--white);
-  height: 50px;
+  height: 49px;
   border-bottom: 1px solid var(--grey100);
   position: sticky;
   top: 0;

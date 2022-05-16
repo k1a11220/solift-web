@@ -9,7 +9,7 @@ const Header = styled.header`
   display: flex;
   align-items: flex-end;
   height: 70px;
-  margin: 12px 22px;
+  margin: 22px;
 
   & h1 {
     font-size: 23px;
@@ -26,12 +26,12 @@ const PostList = styled.div`
 
 const Chips = styled.div`
   display: flex;
+  align-items: center;
   gap: 2px;
   width: 100%;
   overflow-x: auto;
-  margin-top: 32px;
-  padding-bottom: 10px;
   border-bottom: 1px solid var(--grey100);
+  height: 50px;
 
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
