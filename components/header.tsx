@@ -6,7 +6,7 @@ const Container = styled.div`
   align-items: flex-end;
   justify-content: center;
   height: 60px;
-  max-width: 36rem;
+  padding: 12px;
 
   & h1 {
     font-size: 15px;

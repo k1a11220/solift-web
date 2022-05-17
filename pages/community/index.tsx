@@ -1,6 +1,7 @@
 import Chip from "@components/chip";
 import Post from "@components/post";
 import styled from "@emotion/styled";
+import Link from "next/link";
 
 const Container = styled.div``;
 
@@ -53,12 +54,9 @@ const Community = () => {
         <Chip isActive={false} content={"생활"} />
       </Chips>
       <PostList>
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
+        <Link href={"/community/post/1"}>
+          <Post />
+        </Link>
       </PostList>
     </Container>
   );
