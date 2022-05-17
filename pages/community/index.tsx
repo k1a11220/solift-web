@@ -1,7 +1,6 @@
 import Chip from "@components/chip";
 import Post from "@components/post";
 import styled from "@emotion/styled";
-import { useState } from "react";
 
 const Container = styled.div``;
 
