@@ -1,4 +1,5 @@
 import Chip from "@components/chip";
+import Layout from "@components/layout";
 import Post from "@components/post";
 import styled from "@emotion/styled";
 import Link from "next/link";
@@ -43,22 +44,24 @@ const Chips = styled.div`
 
 const Community = () => {
   return (
-    <Container>
-      <Header>
-        <h1>커뮤니티</h1>
-      </Header>
-      <Chips>
-        <Chip isActive={true} content={"전체"} />
-        <Chip isActive={false} content={"전공"} />
-        <Chip isActive={false} content={"취업"} />
-        <Chip isActive={false} content={"생활"} />
-      </Chips>
-      <PostList>
-        <Link href={"/community/post/1"}>
-          <Post />
-        </Link>
-      </PostList>
-    </Container>
+    <Layout hasTabBar>
+      <Container>
+        <Header>
+          <h1>커뮤니티</h1>
+        </Header>
+        <Chips>
+          <Chip isActive={true} content={"전체"} />
+          <Chip isActive={false} content={"전공"} />
+          <Chip isActive={false} content={"취업"} />
+          <Chip isActive={false} content={"생활"} />
+        </Chips>
+        <PostList>
+          <Link href={"/community/post/1"}>
+            <Post />
+          </Link>
+        </PostList>
+      </Container>
+    </Layout>
   );
 };
 

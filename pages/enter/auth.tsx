@@ -2,20 +2,20 @@ import { NextPage } from "next";
 import { CTA } from "../../components/cta";
 import styled from "@emotion/styled";
 import { Header } from "@components/header";
+import Layout from "@components/layout";
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
   justify-content: space-between;
   margin: 0 22px;
 `;
 
 const StyledForm = styled.form`
   display: flex;
+  gap: 1rem;
   flex-direction: column;
-  height: calc(100% - 134px - 22px);
   justify-content: space-between;
 `;
 
@@ -43,7 +43,7 @@ const TitleWrapper = styled.div`
   & h1 {
     font-size: 24px;
     font-weight: 600;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
   }
 
   & h2 {
@@ -52,44 +52,46 @@ const TitleWrapper = styled.div`
 `;
 
 const Auth: NextPage = () => {
-  const data = false;
+  const data = true;
   return (
-    <Container>
-      <Header type={true} title={"인증"} />
-      <div style={{ width: "100%", height: "100%" }}>
-        <TitleWrapper>
-          {data ? (
-            <>
-              <h1>인증번호를 입력해 주세요.</h1>
-              <h2>인증번호를 확인할게요.</h2>
-            </>
-          ) : (
-            <>
-              <h1>휴대폰 번호를 입력해 주세요</h1>
-              <h2>휴대폰 번호는 타인에게 노출되지 않아요</h2>
-            </>
-          )}
-        </TitleWrapper>
+    <Layout hasTabBar={false} hasHeader={true}>
+      <Container>
+        <Header type={true} title={"인증"} />
+        <div style={{ width: "100%", height: "100%" }}>
+          <TitleWrapper>
+            {data ? (
+              <>
+                <h1>인증번호를 입력해 주세요.</h1>
+                <h2>인증번호를 확인할게요.</h2>
+              </>
+            ) : (
+              <>
+                <h1>휴대폰 번호를 입력해 주세요</h1>
+                <h2>휴대폰 번호는 타인에게 노출되지 않아요</h2>
+              </>
+            )}
+          </TitleWrapper>
 
-        <StyledForm>
-          {data ? (
-            <>
-              <StyledInput placeholder="인증번호를 입력해 주세요." />
-              <CTA type="button" isDisabled={true} autoFocus={true}>
-                인증하기
-              </CTA>
-            </>
-          ) : (
-            <>
-              <StyledInput type="text" placeholder="휴대폰 번호" />
-              <CTA type="submit" isDisabled={true} autoFocus={true}>
-                인증하기
-              </CTA>
-            </>
-          )}
-        </StyledForm>
-      </div>
-    </Container>
+          <StyledForm>
+            {data ? (
+              <>
+                <StyledInput placeholder="인증번호를 입력해 주세요." />
+                <CTA type="button" isDisabled={true} autoFocus={true}>
+                  인증하기
+                </CTA>
+              </>
+            ) : (
+              <>
+                <StyledInput type="text" placeholder="휴대폰 번호" />
+                <CTA type="submit" isDisabled={true} autoFocus={true}>
+                  인증하기
+                </CTA>
+              </>
+            )}
+          </StyledForm>
+        </div>
+      </Container>
+    </Layout>
   );
 };
 

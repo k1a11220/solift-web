@@ -3,10 +3,14 @@ import { useRouter } from "next/router";
 
 const Container = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
-  height: 60px;
-  padding: 12px;
+  height: 3rem;
+  width: 100%;
+  position: fixed;
+  max-width: 36rem;
+  top: 0px;
+  background-color: var(--white);
 
   & h1 {
     font-size: 15px;

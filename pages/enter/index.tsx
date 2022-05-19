@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { CTA } from "@components/cta";
+import Layout from "@components/layout";
 
 const Container = styled.div`
   display: flex;
@@ -32,25 +33,27 @@ const ButtonDetail = styled.div`
 const Enter: NextPage = () => {
   const router = useRouter();
   return (
-    <Container>
-      <div>
-        <h1>SOLIFT</h1>
-      </div>
-      <div style={{ width: "100%" }}>
-        <CTA
-          type="button"
-          isDisabled={false}
-          autoFocus={true}
-          onClick={() => router.push("/enter/auth")}
-        >
-          시작하기
-        </CTA>
-        <ButtonDetail>
-          <p>이미 계정이 있나요?</p>{" "}
-          <button onClick={() => router.push("/enter/auth")}>로그인</button>
-        </ButtonDetail>
-      </div>
-    </Container>
+    <Layout hasTabBar={false}>
+      <Container>
+        <div>
+          <h1>SOLIFT</h1>
+        </div>
+        <div style={{ width: "100%" }}>
+          <CTA
+            type="button"
+            isDisabled={false}
+            autoFocus={true}
+            onClick={() => router.push("/enter/auth")}
+          >
+            시작하기
+          </CTA>
+          <ButtonDetail>
+            <p>이미 계정이 있나요?</p>{" "}
+            <button onClick={() => router.push("/enter/auth")}>로그인</button>
+          </ButtonDetail>
+        </div>
+      </Container>
+    </Layout>
   );
 };
 

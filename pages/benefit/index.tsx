@@ -1,3 +1,4 @@
+import Layout from "@components/layout";
 import TabIndicator from "@components/tab-indicator";
 import styled from "@emotion/styled";
 
@@ -17,12 +18,14 @@ const Header = styled.header`
 
 const Community = () => {
   return (
-    <Container>
-      <Header>
-        <h1>혜택</h1>
-      </Header>
-      <TabIndicator />
-    </Container>
+    <Layout hasTabBar>
+      <Container>
+        <Header>
+          <h1>혜택</h1>
+        </Header>
+        <TabIndicator />
+      </Container>
+    </Layout>
   );
 };
 

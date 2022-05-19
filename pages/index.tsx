@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import type { NextPage } from "next";
 import BottomTabs from "@components/bottom-tabs";
 import TabIndicator from "@components/tab-indicator";
+import Layout from "@components/layout";
 
 const Header = styled.header`
   display: flex;
@@ -65,7 +66,7 @@ const Title = styled.p`
 
 const Home: NextPage = () => {
   return (
-    <>
+    <Layout hasTabBar>
       <div>
         <Header>
           <Logo>SOLIFT</Logo>
@@ -92,7 +93,7 @@ const Home: NextPage = () => {
         </SlideContainer>
         <TabIndicator />
       </div>
-    </>
+    </Layout>
   );
 };
 
