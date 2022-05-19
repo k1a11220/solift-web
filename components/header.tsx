@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
+import * as Icon from "@icons";
 
 const Container = styled.div`
   display: flex;
@@ -37,19 +38,7 @@ export function Header({ type, title }) {
   return (
     <Container>
       <BackBtn onClick={onClick}>
-        <svg
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M15 19l-7-7 7-7"
-          ></path>
-        </svg>
+        <Icon.Chevron />
       </BackBtn>
       <h1>{title}</h1>
     </Container>

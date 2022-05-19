@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import type { NextPage } from "next";
-import BottomTabs from "@components/bottom-tabs";
 import TabIndicator from "@components/tab-indicator";
 import Layout from "@components/layout";
 

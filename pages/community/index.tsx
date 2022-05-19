@@ -57,7 +57,14 @@ const Community = () => {
         </Chips>
         <PostList>
           <Link href={"/community/post/1"}>
-            <Post />
+            <div>
+              <Post />
+            </div>
+          </Link>
+          <Link href={"/community/post/1"}>
+            <div>
+              <Post />
+            </div>
           </Link>
         </PostList>
       </Container>

@@ -52,7 +52,7 @@ const TitleWrapper = styled.div`
 `;
 
 const Auth: NextPage = () => {
-  const data = true;
+  const data = false;
   return (
     <Layout hasTabBar={false} hasHeader={true}>
       <Container>
@@ -76,14 +76,14 @@ const Auth: NextPage = () => {
             {data ? (
               <>
                 <StyledInput placeholder="인증번호를 입력해 주세요." />
-                <CTA type="button" isDisabled={true} autoFocus={true}>
+                <CTA type="button" disabled={true} autoFocus={true}>
                   인증하기
                 </CTA>
               </>
             ) : (
               <>
                 <StyledInput type="text" placeholder="휴대폰 번호" />
-                <CTA type="submit" isDisabled={true} autoFocus={true}>
+                <CTA type="submit" disabled={true} autoFocus={true}>
                   인증하기
                 </CTA>
               </>

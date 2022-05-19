@@ -41,7 +41,7 @@ const Enter: NextPage = () => {
         <div style={{ width: "100%" }}>
           <CTA
             type="button"
-            isDisabled={false}
+            disabled={false}
             autoFocus={true}
             onClick={() => router.push("/enter/auth")}
           >

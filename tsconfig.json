@@ -17,7 +17,8 @@
     "baseUrl": ".",
     "paths": {
       "@media/*": ["media/*"],
-      "@components/*": ["components/*"]
+      "@components/*": ["components/*"],
+      "@icons": ["icons"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

@@ -3,13 +3,13 @@ import { ReactNode } from "react";
 
 interface CTAProps {
   type: "button" | "submit" | "reset";
-  isDisabled: boolean;
+  disabled: boolean;
   children: ReactNode;
   autoFocus: boolean;
   onClick?: () => void;
 }
 
-const Container = styled.button<{ isDisabled: boolean }>`
+const Container = styled.button<{ disabled: boolean }>`
   width: 100%;
   padding: 17px 0;
   font-size: 1rem;
@@ -17,21 +17,21 @@ const Container = styled.button<{ isDisabled: boolean }>`
   border: none;
   color: var(--white);
   background-color: ${(props) =>
-    props.isDisabled ? "var(--blue100)" : "var(--blue500)"};
-  cursor: pointer;
+    props.disabled ? "var(--blue100)" : "var(--blue500)"};
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   /* margin-bottom: 22px; */
 `;
 
 export function CTA({
   type,
-  isDisabled,
+  disabled,
   children,
   autoFocus,
   onClick,
   ...rest
 }: CTAProps) {
   return (
-    <Container isDisabled={isDisabled} onClick={onClick} {...rest}>
+    <Container disabled={disabled} onClick={onClick} {...rest}>
       {children}
     </Container>
   );
