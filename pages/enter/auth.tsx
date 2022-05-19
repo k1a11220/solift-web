@@ -82,7 +82,10 @@ const Auth: NextPage = () => {
               </>
             ) : (
               <>
-                <StyledInput type="text" placeholder="휴대폰 번호" />
+                <StyledInput
+                  type="text"
+                  placeholder="휴대폰 번호(- 없이 숫자만 입력)"
+                />
                 <CTA type="submit" disabled={true} autoFocus={true}>
                   인증하기
                 </CTA>
