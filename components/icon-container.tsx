@@ -5,6 +5,7 @@ interface IconContainerProps {
   children: ReactJSXElement;
   size: "24px" | "22px" | "20px" | "16px";
   color:
+    | "var(--grey200)"
     | "var(--grey300)"
     | "var(--grey500)"
     | "var(--white)"

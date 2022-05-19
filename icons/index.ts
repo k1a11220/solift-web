@@ -11,3 +11,4 @@ export * from "./deviceMobile-outline";
 export * from "./speakerphone-outline";
 export * from "./userGroup-outline";
 export * from "./mail-outline";
+export * from "./dotsVertical-outline";

@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import * as Icon from "@icons";
+import IconContainer from "./icon-container";
 
 export const PostContainer = styled.div`
   background-color: var(--white);
@@ -27,6 +28,7 @@ export const PostContent = styled.div`
 
 export const PostUserInfo = styled.div`
   display: flex;
+  align-items: center;
 
   & > div {
     margin-right: 10px;
@@ -39,7 +41,7 @@ export const PostUserInfo = styled.div`
   }
 `;
 
-export const PostDetail = styled.p`
+export const PostMain = styled.p`
   font-size: 15px;
   color: var(--grey400);
 `;
@@ -94,13 +96,13 @@ const Post = () => {
           </div>
         </PostUserInfo>
         <h3>군대에서 코딩 공부 하는 방법</h3>
-        <PostDetail>
+        <PostMain>
           제가 군대에 가게되어서 공부를 놓게 될 것 같습니다. 그래서 그런데 다른
           공부라면 책만 있어도 공부가 되겠지만, 이런 경우는 싸지방을 가서 코딩을
           하고 싶어도 비쥬얼 스튜디오나, 이클립스 같은 프로그램을 깔 수 없는
           것으로 아는데, 코딩을 웹으로 하는 사이트나 그 외의 대안을 추천해주시면
           좋겠습니다.
-        </PostDetail>
+        </PostMain>
         <PostImg />
       </PostContent>
       <PostInfo>
