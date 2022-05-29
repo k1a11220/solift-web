@@ -80,12 +80,9 @@ const Auth: NextPage = () => {
   const onValid = (data: AuthForm) => {
     setData(true);
     reset();
-    console.log(data);
   };
 
-  const onInvalid = (errors: FieldErrors) => {
-    console.log(errors);
-  };
+  const onInvalid = (errors: FieldErrors) => {};
 
   return (
     <Layout hasTabBar={false} hasHeader={true}>
@@ -130,7 +127,6 @@ const Auth: NextPage = () => {
                   type="number"
                   placeholder="휴대폰 번호(- 없이 숫자만 입력)"
                 />
-                {console.log(getValues("phone"))}
                 <CTA type="submit" disabled={!isValid} autoFocus={true}>
                   인증하기
                 </CTA>
