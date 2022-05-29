@@ -3,6 +3,21 @@ import { CTA } from "../../components/cta";
 import styled from "@emotion/styled";
 import { Header } from "@components/header";
 import Layout from "@components/layout";
+import { FieldErrors, useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+
+interface AuthForm {
+  phone?: string;
+  token?: string;
+}
+
+interface PhoneForm {
+  phone: string;
+}
+
+interface TokenForm {
+  token: string;
+}
 
 const Container = styled.div`
   display: flex;
@@ -52,7 +67,26 @@ const TitleWrapper = styled.div`
 `;
 
 const Auth: NextPage = () => {
-  const data = false;
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors, isValid },
+    reset,
+    watch,
+  } = useForm<AuthForm>({ mode: "onChange" });
+  const [data, setData] = useState(false);
+
+  const onValid = (data: AuthForm) => {
+    setData(true);
+    reset();
+    console.log(data);
+  };
+
+  const onInvalid = (errors: FieldErrors) => {
+    console.log(errors);
+  };
+
   return (
     <Layout hasTabBar={false} hasHeader={true}>
       <Container>
@@ -72,21 +106,32 @@ const Auth: NextPage = () => {
             )}
           </TitleWrapper>
 
-          <StyledForm>
+          <StyledForm onSubmit={handleSubmit(onValid, onInvalid)}>
             {data ? (
               <>
-                <StyledInput placeholder="인증번호를 입력해 주세요." />
-                <CTA type="button" disabled={true} autoFocus={true}>
+                <StyledInput
+                  {...register("token", {
+                    required: true,
+                  })}
+                  type="number"
+                  placeholder="인증번호를 입력해 주세요."
+                />
+                <CTA type="button" disabled={!isValid} autoFocus={true}>
                   인증하기
                 </CTA>
               </>
             ) : (
               <>
                 <StyledInput
-                  type="text"
+                  {...register("phone", {
+                    required: true,
+                    value: "",
+                  })}
+                  type="number"
                   placeholder="휴대폰 번호(- 없이 숫자만 입력)"
                 />
-                <CTA type="submit" disabled={true} autoFocus={true}>
+                {console.log(getValues("phone"))}
+                <CTA type="submit" disabled={!isValid} autoFocus={true}>
                   인증하기
                 </CTA>
               </>
