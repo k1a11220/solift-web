@@ -3,8 +3,11 @@ import { CTA } from "../../components/cta";
 import styled from "@emotion/styled";
 import { Header } from "@components/header";
 import Layout from "@components/layout";
-import { FieldErrors, useForm } from "react-hook-form";
+import { FieldErrors, useForm, useFormState } from "react-hook-form";
 import { useEffect, useState } from "react";
+import useMutation from "@libs/client/useMutation";
+import { useRouter } from "next/router";
+import useUser from "@libs/client/useUser";
 
 interface AuthForm {
   phone?: string;
@@ -17,6 +20,10 @@ interface PhoneForm {
 
 interface TokenForm {
   token: string;
+}
+
+interface MutationResult {
+  ok: boolean;
 }
 
 const Container = styled.div`
@@ -70,19 +77,38 @@ const Auth: NextPage = () => {
   const {
     register,
     handleSubmit,
-    getValues,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isDirty },
     reset,
     watch,
   } = useForm<AuthForm>({ mode: "onChange" });
-  const [data, setData] = useState(false);
 
-  const onValid = (data: AuthForm) => {
-    setData(true);
+  const onValid = (validForm: AuthForm) => {
+    if (loading) return;
     reset();
+    enter(validForm);
+  };
+  const onTokenValid = (validForm: TokenForm) => {
+    if (tokenLoading) return;
+    confirmToken(validForm);
   };
 
-  const onInvalid = (errors: FieldErrors) => {};
+  const [enter, { loading, data, error }] =
+    useMutation<MutationResult>("/api/users/enter");
+  const [confirmToken, { loading: tokenLoading, data: tokenData }] =
+    useMutation<MutationResult>("/api/users/confirm");
+  const { register: tokenRegister, handleSubmit: tokenHandleSubmit } =
+    useForm<TokenForm>();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (tokenData?.ok) {
+      router.push("/");
+    }
+  }, [tokenData, router]);
+
+  if (useUser().user) {
+    router.push("/");
+  }
 
   return (
     <Layout hasTabBar={false} hasHeader={true}>
@@ -103,36 +129,42 @@ const Auth: NextPage = () => {
             )}
           </TitleWrapper>
 
-          <StyledForm onSubmit={handleSubmit(onValid, onInvalid)}>
-            {data ? (
-              <>
-                <StyledInput
-                  {...register("token", {
-                    required: true,
-                  })}
-                  type="number"
-                  placeholder="인증번호를 입력해 주세요."
-                />
-                <CTA type="button" disabled={!isValid} autoFocus={true}>
-                  인증하기
-                </CTA>
-              </>
-            ) : (
-              <>
-                <StyledInput
-                  {...register("phone", {
-                    required: true,
-                    value: "",
-                  })}
-                  type="number"
-                  placeholder="휴대폰 번호(- 없이 숫자만 입력)"
-                />
-                <CTA type="submit" disabled={!isValid} autoFocus={true}>
-                  인증하기
-                </CTA>
-              </>
-            )}
-          </StyledForm>
+          {data ? (
+            <StyledForm onSubmit={tokenHandleSubmit(onTokenValid)}>
+              <StyledInput
+                {...tokenRegister("token", {
+                  required: true,
+                })}
+                type="number"
+                placeholder="인증번호를 입력해 주세요."
+              />
+              <CTA
+                type="button"
+                disabled={watch("token") === "" ? true : false}
+                autoFocus={true}
+              >
+                {tokenLoading ? "로딩중이에요" : "인증하기"}
+              </CTA>
+            </StyledForm>
+          ) : (
+            <StyledForm onSubmit={handleSubmit(onValid)}>
+              <StyledInput
+                {...register("phone", {
+                  required: true,
+                  value: "",
+                })}
+                type="number"
+                placeholder="휴대폰 번호(- 없이 숫자만 입력)"
+              />
+              <CTA
+                type="submit"
+                disabled={!isDirty || !isValid}
+                autoFocus={true}
+              >
+                {loading ? "로딩중이에요" : "인증번호 받기"}
+              </CTA>
+            </StyledForm>
+          )}
         </div>
       </Container>
     </Layout>

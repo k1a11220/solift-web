@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import type { NextPage } from "next";
 import TabIndicator from "@components/tab-indicator";
 import Layout from "@components/layout";
+import useUser from "@libs/client/useUser";
 
 const Header = styled.header`
   display: flex;
@@ -64,6 +65,8 @@ const Title = styled.p`
 `;
 
 const Home: NextPage = () => {
+  const { user, isLoading } = useUser();
+  console.log(user);
   return (
     <Layout hasTabBar>
       <div>

@@ -18,7 +18,8 @@
     "paths": {
       "@media/*": ["media/*"],
       "@components/*": ["components/*"],
-      "@icons": ["icons"]
+      "@icons": ["icons"],
+      "@libs/*": ["libs/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

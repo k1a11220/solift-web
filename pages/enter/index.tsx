@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { CTA } from "@components/cta";
 import Layout from "@components/layout";
+import useUser from "@libs/client/useUser";
 
 const Container = styled.div`
   display: flex;
@@ -32,6 +33,7 @@ const ButtonDetail = styled.div`
 
 const Enter: NextPage = () => {
   const router = useRouter();
+  const { user } = useUser();
   return (
     <Layout hasTabBar={false}>
       <Container>
