@@ -13,13 +13,19 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  phone     String   @unique
-  name      String
-  avatar    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Token     Token[]
+  id                    Int                     @id @default(autoincrement())
+  phone                 String                  @unique
+  name                  String
+  avatar                String?
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+  Token                 Token[]
+  Post                  Post[]
+  PostComment           PostComment[]
+  PostThumb             PostThumb[]
+  PostCommentThumb      PostCommentThumb[]
+  PostCommentReply      PostCommentReply[]
+  PostCommentReplyThumb PostCommentReplyThumb[]
 }
 
 model Token {
@@ -29,4 +35,78 @@ model Token {
   userId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id                    Int                     @id @default(autoincrement())
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+  title                 String
+  content               String
+  user                  User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                Int
+  postComments          PostComment[]
+  postThumbs            PostThumb[]
+  PostCommentThumb      PostCommentThumb[]
+  PostCommentReply      PostCommentReply[]
+  PostCommentReplyThumb PostCommentReplyThumb[]
+}
+
+model PostThumb {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Post      Post?    @relation(fields: [postId], references: [id])
+  postId    Int?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+}
+
+model PostComment {
+  id                    Int                     @id @default(autoincrement())
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+  Post                  Post?                   @relation(fields: [postId], references: [id])
+  postId                Int?
+  user                  User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                Int
+  PostCommentReplyThumb PostCommentReplyThumb[]
+  PostCommentReply      PostCommentReply[]
+}
+
+model PostCommentThumb {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Post      Post?    @relation(fields: [postId], references: [id])
+  postId    Int?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+}
+
+model PostCommentReply {
+  id                    Int                     @id @default(autoincrement())
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+  PostComment           PostComment?            @relation(fields: [postCommentId], references: [id])
+  postCommentId         Int?
+  Post                  Post?                   @relation(fields: [postId], references: [id])
+  postId                Int?
+  user                  User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                Int
+  PostCommentReplyThumb PostCommentReplyThumb[]
+}
+
+model PostCommentReplyThumb {
+  id                 Int               @id @default(autoincrement())
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  Post               Post?             @relation(fields: [postId], references: [id])
+  postId             Int?
+  PostComment        PostComment?      @relation(fields: [postCommentId], references: [id])
+  postCommentId      Int?
+  PostCommentReply   PostCommentReply? @relation(fields: [postCommentReplyId], references: [id])
+  postCommentReplyId Int?
+  user               User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId             Int
 }
