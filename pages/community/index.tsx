@@ -1,8 +1,10 @@
 import Chip from "@components/chip";
+import FloatingBtn from "@components/floating-btn";
 import Layout from "@components/layout";
 import Post from "@components/post";
 import styled from "@emotion/styled";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Container = styled.div``;
 
@@ -43,6 +45,7 @@ const Chips = styled.div`
 `;
 
 const Community = () => {
+  const router = useRouter();
   return (
     <Layout hasTabBar>
       <Container>
@@ -67,6 +70,8 @@ const Community = () => {
             </div>
           </Link>
         </PostList>
+
+        <FloatingBtn type="Write" action={() => router.push("/")} />
       </Container>
     </Layout>
   );

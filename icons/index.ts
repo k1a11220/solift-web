@@ -12,3 +12,5 @@ export * from "./speakerphone-outline";
 export * from "./userGroup-outline";
 export * from "./mail-outline";
 export * from "./dotsVertical-outline";
+export * from "./pencil-outline";
+export * from "./search-outline";
