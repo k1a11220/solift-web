@@ -70,8 +70,10 @@ const Community = () => {
             </div>
           </Link>
         </PostList>
-
-        <FloatingBtn type="Write" action={() => router.push("/")} />
+        <FloatingBtn
+          type="Write"
+          action={() => router.push("/community/write")}
+        />
       </Container>
     </Layout>
   );

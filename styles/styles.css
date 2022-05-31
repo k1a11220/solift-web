@@ -3,9 +3,10 @@
   --width: 1140px;
   --min-width: 320px;
   --post-width: 780px;
-  --nav-height: 58px;
+  --tab-height: 58px;
   --nav-collapse-height: 64px;
   --footer-height: 180px;
+  --margin-side: 0 22px;
 
   --white: #fff;
   --black: #000;

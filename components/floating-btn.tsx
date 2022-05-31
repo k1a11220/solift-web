@@ -23,7 +23,7 @@ const BtnContainer = styled.div`
   width: 100vw;
   max-width: 36rem;
   position: fixed;
-  bottom: calc(var(--nav-height) + 14px);
+  bottom: calc(var(--tab-height) + 14px);
   display: flex;
   justify-content: flex-end;
 `;

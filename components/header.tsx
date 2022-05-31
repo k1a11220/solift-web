@@ -2,6 +2,12 @@ import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import * as Icon from "@icons";
 
+interface HeaderProps {
+  type: "write" | "post";
+  title: string;
+  rightItem?: React.ReactNode;
+}
+
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -15,6 +21,7 @@ const Container = styled.div`
 
   & h1 {
     font-size: 15px;
+    font-weight: 500;
   }
 
   border-bottom: 1px solid var(--grey100);
@@ -30,7 +37,12 @@ const BackBtn = styled.button`
   padding: 0;
 `;
 
-export function Header({ type, title }) {
+const RightItem = styled.div`
+  position: absolute;
+  right: 22px;
+`;
+
+export function Header({ type, title, rightItem }: HeaderProps) {
   const router = useRouter();
   const onClick = () => {
     router.back();
@@ -41,6 +53,7 @@ export function Header({ type, title }) {
         <Icon.Chevron />
       </BackBtn>
       <h1>{title}</h1>
+      <RightItem>{rightItem}</RightItem>
     </Container>
   );
 }

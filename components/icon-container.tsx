@@ -14,7 +14,7 @@ interface IconContainerProps {
 
 const Container = styled.div<{ size: string }>`
   display: flex;
-  width: 22px;
+  width: ${(props) => props.size};
   color: ${({ color }) => color};
 `;
 
