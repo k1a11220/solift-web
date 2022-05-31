@@ -1,18 +1,16 @@
-import { NextPage } from "next";
-import { CTA } from "../../components/cta";
-import styled from "@emotion/styled";
+import { CTA } from "@components/cta";
+import { StyledForm, StyledInput } from "@components/forms";
 import { Header } from "@components/header";
 import Layout from "@components/layout";
-import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import styled from "@emotion/styled";
 import useMutation from "@libs/client/useMutation";
-import { useRouter } from "next/router";
 import useUser from "@libs/client/useUser";
-import { StyledForm, StyledInput } from "@components/forms";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
-interface AuthForm {
-  phone?: string;
-  token?: string;
+interface TokenForm {
+  token: string;
 }
 
 interface MutationResult {
@@ -23,6 +21,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100vh;
   justify-content: space-between;
   margin: 0 22px;
 `;
@@ -40,37 +39,30 @@ const TitleWrapper = styled.div`
   }
 `;
 
-const Auth: NextPage = () => {
+const Token = () => {
   const {
     register,
     handleSubmit,
     formState: { isValid, isDirty },
-    reset,
-    watch,
-  } = useForm<AuthForm>({ mode: "onChange" });
+  } = useForm<TokenForm>({ mode: "onChange" });
 
-  const onValid = (validForm: AuthForm) => {
+  const [confirmToken, { loading, data }] =
+    useMutation<MutationResult>("/api/users/confirm");
+  const router = useRouter();
+  const onTokenValid = (validForm: TokenForm) => {
     if (loading) return;
-    reset();
-    enter(validForm);
+    confirmToken(validForm);
   };
 
-  const [enter, { loading, data, error }] =
-    useMutation<MutationResult>("/api/users/enter");
-
-  const router = useRouter();
-
-  console.log(watch("token"));
+  useEffect(() => {
+    if (data?.ok) {
+      router.push("/");
+    }
+  }, [data, router]);
 
   if (useUser(true).user) {
     router.push("/");
   }
-
-  useEffect(() => {
-    if (data?.ok) {
-      router.push("/enter/token");
-    }
-  }, [data, router]);
 
   return (
     <Layout hasTabBar={false} hasHeader={true}>
@@ -78,28 +70,24 @@ const Auth: NextPage = () => {
         <Header type={true} title={"인증"} />
         <div style={{ width: "100%", height: "100%" }}>
           <TitleWrapper>
-            <h1>
-              나라사랑카드 @앞숫자를 <br />
-              입력해 주세요
-            </h1>
-            <h2>휴대폰 번호는 타인에게 노출되지 않아요</h2>
+            <h1>인증번호를 입력해 주세요.</h1>
+            <h2>인증번호를 확인할게요.</h2>
           </TitleWrapper>
-          <StyledForm onSubmit={handleSubmit(onValid)}>
+          <StyledForm onSubmit={handleSubmit(onTokenValid)}>
             <StyledInput
-              {...register("phone", {
+              {...register("token", {
                 required: true,
-                value: "",
                 disabled: loading,
               })}
               type="number"
-              placeholder="나라사랑카드 이메일 번호(숫자만 입력)"
+              placeholder="인증번호를 입력해 주세요."
             />
             <CTA
-              type="submit"
+              type="button"
               disabled={loading || !isDirty || !isValid}
               autoFocus={true}
             >
-              {loading ? "로딩중이에요" : "인증번호 받기"}
+              {loading ? "로딩중이에요" : "인증하기"}
             </CTA>
           </StyledForm>
         </div>
@@ -108,4 +96,4 @@ const Auth: NextPage = () => {
   );
 };
 
-export default Auth;
+export default Token;

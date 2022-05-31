@@ -33,7 +33,11 @@ const ButtonDetail = styled.div`
 
 const Enter: NextPage = () => {
   const router = useRouter();
-  const { user } = useUser();
+
+  if (useUser(true).user) {
+    router.push("/");
+  }
+
   return (
     <Layout hasTabBar={false}>
       <Container>
