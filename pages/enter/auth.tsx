@@ -75,14 +75,14 @@ const Auth: NextPage = () => {
   return (
     <Layout hasTabBar={false} hasHeader={true}>
       <Container>
-        <Header type={true} title={"인증"} />
+        <Header title={"인증"} />
         <div style={{ width: "100%", height: "100%" }}>
           <TitleWrapper>
             <h1>
-              나라사랑카드 @앞숫자를 <br />
+              나라사랑포털 아이디를 <br />
               입력해 주세요
             </h1>
-            <h2>휴대폰 번호는 타인에게 노출되지 않아요</h2>
+            <h2>나라사랑카드 하단에 있는 메일주소 @앞숫자에요</h2>
           </TitleWrapper>
           <StyledForm onSubmit={handleSubmit(onValid)}>
             <StyledInput

@@ -19,18 +19,18 @@ async function handler(
   if (req.method === "POST") {
     const {
       session: { user },
-      body: { phone, name },
+      body: { email, name },
     } = req;
     const currentUser = await client.user.findUnique({
       where: {
         id: user?.id,
       },
     });
-    if (phone && phone !== currentUser?.phone) {
+    if (email && email !== currentUser?.email) {
       const alreadyExists = Boolean(
         await client.user.findUnique({
           where: {
-            phone,
+            email,
           },
           select: {
             id: true,
@@ -40,7 +40,7 @@ async function handler(
       if (alreadyExists) {
         return res.json({
           ok: false,
-          error: "Phone already in use.",
+          error: "email already in use.",
         });
       }
       await client.user.update({
@@ -48,7 +48,7 @@ async function handler(
           id: user?.id,
         },
         data: {
-          phone,
+          email,
         },
       });
       res.json({ ok: true });

@@ -67,7 +67,7 @@ const Token = () => {
   return (
     <Layout hasTabBar={false} hasHeader={true}>
       <Container>
-        <Header type={true} title={"인증"} />
+        <Header title={"인증"} />
         <div style={{ width: "100%", height: "100%" }}>
           <TitleWrapper>
             <h1>인증번호를 입력해 주세요.</h1>
