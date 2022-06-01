@@ -11,7 +11,7 @@ import useUser from "@libs/client/useUser";
 import { StyledForm, StyledInput } from "@components/forms";
 
 interface AuthForm {
-  phone?: string;
+  email?: string;
   token?: string;
 }
 
@@ -86,7 +86,7 @@ const Auth: NextPage = () => {
           </TitleWrapper>
           <StyledForm onSubmit={handleSubmit(onValid)}>
             <StyledInput
-              {...register("phone", {
+              {...register("email", {
                 required: true,
                 value: "",
                 disabled: loading,

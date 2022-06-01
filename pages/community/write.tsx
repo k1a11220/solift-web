@@ -28,7 +28,7 @@ const SelectContainer = styled.div`
 const Styledform = styled.form`
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 49px + 58.5px - 52.5px - var(--tab-height) * 2);
+  height: calc(100vh - 49px + 58.5px - 52.5px - var(--tab-height) * 2 - 7px);
   margin: var(--margin-side);
 `;
 
@@ -52,7 +52,7 @@ const Write = () => {
     <Layout hasTabBar={false} hasHeader={true}>
       <Header
         title={"글쓰기"}
-        type={"write"}
+        hasRightItem={true}
         rightItem={<RightItem disabled={true}>등록</RightItem>}
       />
       <SelectContainer>

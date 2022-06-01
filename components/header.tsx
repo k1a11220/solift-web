@@ -3,7 +3,10 @@ import { useRouter } from "next/router";
 import * as Icon from "@icons";
 
 interface HeaderProps {
-  type: "write" | "post";
+  type?: "default" | "large";
+  hasTitle?: boolean;
+  hasRightItem?: boolean;
+  hasBack?: boolean;
   title: string;
   rightItem?: React.ReactNode;
 }
@@ -42,18 +45,27 @@ const RightItem = styled.div`
   right: 22px;
 `;
 
-export function Header({ type, title, rightItem }: HeaderProps) {
+export function Header({
+  type = "default",
+  title,
+  hasTitle = true,
+  hasRightItem = false,
+  hasBack = true,
+  rightItem = null,
+}: HeaderProps) {
   const router = useRouter();
   const onClick = () => {
     router.back();
   };
   return (
     <Container>
-      <BackBtn onClick={onClick}>
-        <Icon.Chevron />
-      </BackBtn>
-      <h1>{title}</h1>
-      <RightItem>{rightItem}</RightItem>
+      {hasBack ? (
+        <BackBtn onClick={onClick}>
+          <Icon.Chevron />
+        </BackBtn>
+      ) : null}
+      {hasTitle ? <h1>{title}</h1> : null}
+      {hasRightItem ? <RightItem>{rightItem}</RightItem> : null}
     </Container>
   );
 }
