@@ -67,14 +67,22 @@ export const PostInfo = styled.div`
     display: flex;
     gap: 5px;
 
-    & span {
-      color: var(--grey300);
-    }
-
     & div {
       width: 1rem;
       color: var(--grey300);
     }
+  }
+
+  & > div {
+    cursor: pointer;
+  }
+`;
+
+export const PostItemInfo = styled.div<{ isClicked: boolean }>`
+  & *,
+  span {
+    color: ${(props) =>
+      props.isClicked ? "var(--blue500)" : "var(--grey300)"};
   }
 `;
 

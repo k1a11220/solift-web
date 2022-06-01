@@ -6,6 +6,7 @@ import {
   PostContent,
   PostImg,
   PostInfo,
+  PostItemInfo,
   PostMain,
   PostProfile,
   PostTime,
@@ -14,6 +15,41 @@ import {
 } from "@components/post";
 import styled from "@emotion/styled";
 import IconContainer from "@components/icon-container";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import useSWR from "swr";
+import { Post, PostComment, PostCommentReply, User } from "@prisma/client";
+import useMutation from "@libs/client/useMutation";
+
+interface PostCommentsWithUser extends PostComment {
+  user: User;
+}
+
+interface PostCommentReplyWithUser extends PostCommentReply {
+  user: User;
+}
+
+interface PostForm {
+  title: string;
+  content: string;
+  category: string;
+}
+
+interface PostWithUser extends Post {
+  user: User;
+  _count: {
+    postThumbs: number;
+    postComments: number;
+    postCommentReplies: number;
+  };
+  postComments: PostCommentsWithUser[];
+}
+
+interface PostResponse {
+  ok: boolean;
+  post: PostWithUser;
+  isThumb: boolean;
+}
 
 const CommentContainer = styled.div`
   margin: 22px;
@@ -55,15 +91,46 @@ const CommentWrapper = styled.div`
 `;
 
 const PostDetail = () => {
+  const router = useRouter();
+  const { data, mutate } = useSWR<PostResponse>(
+    router.query.id ? `/api/posts/${router.query.id}` : null
+  );
+
+  const [thumb, { loading }] = useMutation(
+    `/api/posts/${router.query.id}/thumb`
+  );
+  const onthumbClick = () => {
+    if (!data) return;
+    mutate(
+      {
+        ...data,
+        post: {
+          ...data.post,
+          _count: {
+            ...data.post._count,
+            postThumbs: data.isThumb
+              ? data?.post._count.postThumbs - 1
+              : data?.post._count.postThumbs + 1,
+          },
+        },
+        isThumb: !data.isThumb,
+      },
+      false
+    );
+    if (!loading) {
+      thumb({});
+    }
+  };
+
   return (
     <Layout hasTabBar={false} hasHeader>
-      <Header title={""} type={""} />
+      <Header title={""} />
       <PostContainer>
         <PostContent>
           <PostUserInfo>
             <PostProfile />
             <div>
-              <PostUsername>오비완</PostUsername>
+              <PostUsername>{data?.post?.user?.name}</PostUsername>
               <PostTime>3시간 전</PostTime>
             </div>
             <div style={{ marginLeft: "auto", marginRight: "0" }}>
@@ -72,34 +139,28 @@ const PostDetail = () => {
               </IconContainer>
             </div>
           </PostUserInfo>
-          <h3>피그마로 군대에서 디자인 연습하기</h3>
-          <PostMain>
-            안녕하세요 군대 연등시간에 피그마로 디자인 연습한 내용을 공유합니다.
-            <br />
-            <br />
-            기본적으로 설치형 기반의 프로그램은 사용할 수 없기에 피그마와
-            프레이머 사이에서 고민하다 피그마로 시작했습니다.
-            <br />
-            <br />
-            기본적으로 설치형 기반의 프로그램은 사용할 수 없기에 피그마와
-            프레이머 사이에서 고민하다 피그마로 시작했습니다.
-          </PostMain>
-          <PostImg />
+          <h3>{data?.post?.title}</h3>
+          <PostMain>{data?.post?.content}</PostMain>
         </PostContent>
         <PostInfo>
-          <div>
+          <PostItemInfo
+            isClicked={data?.isThumb === undefined ? false : data?.isThumb}
+            onClick={onthumbClick}
+          >
             <div>
               <Icon.ThumbUpOutline />
             </div>
             <span>추천</span>
-            <span>2</span>
-          </div>
+            <span>{data?.post?._count.postThumbs}</span>
+          </PostItemInfo>
           <div>
             <div>
               <Icon.ChatOutline />
             </div>
-            <span>댓글</span>
-            <span>21</span>
+            <span style={{ color: "var(--grey300)" }}>댓글</span>
+            <span style={{ color: "var(--grey300)" }}>
+              {data?.post?._count.postComments}
+            </span>
           </div>
         </PostInfo>
       </PostContainer>

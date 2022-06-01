@@ -48,7 +48,7 @@ async function handler(
           select: {
             postThumbs: true,
             postComments: true,
-            PostCommentReply: true,
+            postCommentReplies: true,
           },
         },
       },
