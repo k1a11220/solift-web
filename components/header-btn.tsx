@@ -3,6 +3,8 @@ import styled from "@emotion/styled";
 interface HeaderBtnProps {
   children: React.ReactNode;
   disabled: boolean;
+  onClick: () => void;
+  [key: string]: any;
 }
 
 const Button = styled.button<{ disabled: boolean }>`
@@ -10,9 +12,14 @@ const Button = styled.button<{ disabled: boolean }>`
   font-weight: 500;
 `;
 
-const HeaderBtn = ({ children, disabled = true, ...rest }: HeaderBtnProps) => {
+const HeaderBtn = ({
+  children,
+  onClick,
+  disabled = true,
+  ...rest
+}: HeaderBtnProps) => {
   return (
-    <Button disabled={disabled} {...rest}>
+    <Button onClick={onClick} disabled={disabled} {...rest}>
       {children}
     </Button>
   );

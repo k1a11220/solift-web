@@ -8,13 +8,28 @@ import Textarea from "@components/textarea";
 import Toolbar from "@components/toolbar";
 import styled from "@emotion/styled";
 import * as Icon from "@icons";
-import { useState } from "react";
+import useMutation from "@libs/client/useMutation";
+import useUser from "@libs/client/useUser";
+import { Post } from "@prisma/client";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface PostForm {
   title: string;
   content: string;
   category: string;
+}
+
+interface WriteForm {
+  title: string;
+  content: string;
+  category: string;
+}
+
+interface WriteResponse {
+  ok: boolean;
+  post: Post;
 }
 
 const SelectContainer = styled.div`
@@ -35,6 +50,8 @@ const Styledform = styled.form`
   flex-direction: column;
   height: calc(100vh - 49px + 58.5px - 52.5px - var(--tab-height) * 2 - 7px);
   margin: var(--margin-side);
+  justify-content: center;
+  align-items: center;
 `;
 
 const Input = styled.input`
@@ -52,10 +69,10 @@ const Input = styled.input`
   }
 `;
 
-const StyledSelect = styled.form`
+const StyledSelect = styled.div`
   position: fixed;
   bottom: 0;
-  width: 100%;
+  width: 100vw;
   background-color: var(--white);
   z-index: 101;
   max-width: var(--max-width);
@@ -115,7 +132,24 @@ const Write = () => {
     watch,
     formState: { isDirty, isValid },
     getValues,
+    handleSubmit,
   } = useForm<PostForm>({ mode: "onChange" });
+
+  const router = useRouter();
+
+  const [post, { loading, data }] = useMutation<WriteResponse>("/api/posts");
+  const onValid = (data: WriteForm) => {
+    if (loading) return;
+    post({ ...data });
+  };
+
+  const { user, isLoading } = useUser();
+
+  useEffect(() => {
+    if (data && data.ok) {
+      router.push(`/community/post/${data.post.id}`);
+    }
+  }, [data, router]);
 
   const [isCategoryOpen, setIsCategoryOpen] = useState(true);
 
@@ -134,6 +168,9 @@ const Write = () => {
               CategoryValues === null ||
               CategoryValues === undefined
             }
+            type="submit"
+            form="post-write-form"
+            onClick={() => handleSubmit(onValid)}
           >
             등록
           </HeaderBtn>
@@ -157,37 +194,7 @@ const Write = () => {
           </IconContainer>
         )}
       </SelectContainer>
-      {isCategoryOpen ? (
-        <>
-          <StyledSelect>
-            <fieldset>
-              <legend>카테고리를 선택해 주세요</legend>
-              {CategortList.map((category, index) => (
-                <RadioItem key={index} onClick={() => setIsCategoryOpen(false)}>
-                  <input
-                    {...register("category")}
-                    type="radio"
-                    value={category}
-                  />
-                  <label htmlFor={category}>{category}</label>
-                  <IconContainer
-                    className={
-                      watch("category") === category ? "active" : "unactive"
-                    }
-                    color="var(--blue500)"
-                    size="22px"
-                  >
-                    <Icon.CheckOutline />
-                  </IconContainer>
-                </RadioItem>
-              ))}
-            </fieldset>
-          </StyledSelect>
-          <BackgroundFocus onClick={() => setIsCategoryOpen(false)} />
-        </>
-      ) : null}
-
-      <Styledform>
+      <Styledform onSubmit={handleSubmit(onValid)} id="post-write-form">
         <Input
           {...register("title", {
             required: true,
@@ -199,6 +206,38 @@ const Write = () => {
           required
           placeholder="지나친 비방, 욕설, 광고 등의 내용은 통보없이 삭제될 수 있어요."
         ></Textarea>
+        {isCategoryOpen ? (
+          <>
+            <StyledSelect>
+              <fieldset>
+                <legend>카테고리를 선택해 주세요</legend>
+                {CategortList.map((category, index) => (
+                  <RadioItem
+                    key={index}
+                    onClick={() => setIsCategoryOpen(false)}
+                  >
+                    <input
+                      {...register("category")}
+                      type="radio"
+                      value={category}
+                    />
+                    <label htmlFor={category}>{category}</label>
+                    <IconContainer
+                      className={
+                        watch("category") === category ? "active" : "unactive"
+                      }
+                      color="var(--blue500)"
+                      size="22px"
+                    >
+                      <Icon.CheckOutline />
+                    </IconContainer>
+                  </RadioItem>
+                ))}
+              </fieldset>
+            </StyledSelect>
+            <BackgroundFocus onClick={() => setIsCategoryOpen(false)} />
+          </>
+        ) : null}
       </Styledform>
       <Toolbar />
     </Layout>

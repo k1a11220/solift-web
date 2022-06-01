@@ -43,24 +43,15 @@ model Post {
   createdAt             DateTime                @default(now())
   updatedAt             DateTime                @updatedAt
   title                 String
-  content               String
+  content               String                  @db.LongText
   user                  User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId                Int
-  category              Category                @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId            Int
+  category              String
   postComments          PostComment[]
   postThumbs            PostThumb[]
   PostCommentThumb      PostCommentThumb[]
   PostCommentReply      PostCommentReply[]
   PostCommentReplyThumb PostCommentReplyThumb[]
-}
-
-model Category {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Post      Post[]
 }
 
 model PostThumb {
