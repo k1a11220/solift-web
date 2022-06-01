@@ -1,5 +1,6 @@
 :root {
   font-size: 100%;
+  --max-width: 36rem;
   --width: 1140px;
   --min-width: 320px;
   --post-width: 780px;

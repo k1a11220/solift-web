@@ -3,6 +3,7 @@ export function Bin() {}
 export * from "./chevron";
 export * from "./chevron-right";
 export * from "./chevron-down";
+export * from "./chevron-up";
 export * from "./thumbUp-outline";
 export * from "./chat-outline";
 export * from "./clipboardList-outline";
@@ -16,3 +17,4 @@ export * from "./dotsVertical-outline";
 export * from "./pencil-outline";
 export * from "./search-outline";
 export * from "./photograph-outline";
+export * from "./check-outline";

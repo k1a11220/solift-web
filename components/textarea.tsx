@@ -27,7 +27,13 @@ const StyledTextarea = styled.textarea`
   }
 `;
 
-const Textarea = ({ label, name, register, ...rest }: TextareaProps) => {
+const Textarea = ({
+  label,
+  name,
+  required,
+  register,
+  ...rest
+}: TextareaProps) => {
   return (
     <>
       {label ? <label htmlFor={name}>{label}</label> : null}

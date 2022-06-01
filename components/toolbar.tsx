@@ -5,8 +5,8 @@ import IconContainer from "./icon-container";
 const Container = styled.div`
   display: flex;
   padding: var(--margin-side);
-
   width: 100%;
+  max-width: 532px;
   height: var(--tab-height);
   position: fixed;
   bottom: 0;

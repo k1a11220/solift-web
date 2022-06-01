@@ -10,6 +10,7 @@ interface IconContainerProps {
     | "var(--grey500)"
     | "var(--white)"
     | "var(--blue500)";
+  [key: string]: any;
 }
 
 const Container = styled.div<{ size: string }>`
@@ -18,9 +19,14 @@ const Container = styled.div<{ size: string }>`
   color: ${({ color }) => color};
 `;
 
-const IconContainer = ({ children, size, color }: IconContainerProps) => {
+const IconContainer = ({
+  children,
+  size,
+  color,
+  ...rest
+}: IconContainerProps) => {
   return (
-    <Container size={size} color={color}>
+    <Container {...rest} size={size} color={color}>
       {children}
     </Container>
   );
