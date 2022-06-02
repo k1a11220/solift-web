@@ -20,13 +20,31 @@ import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import { Post, PostComment, PostCommentReply, User } from "@prisma/client";
 import useMutation from "@libs/client/useMutation";
+import Link from "next/link";
+
+interface PostReplyResponse {
+  ok: boolean;
+  replies: PostCommentReplyWithUser[];
+  isThumb: boolean;
+}
 
 interface PostCommentsWithUser extends PostComment {
   user: User;
+  _count: {
+    postCommentThumbs: number;
+    postCommentReplies: number;
+  };
+  postCommentReplies: PostCommentReplyWithUser[];
 }
 
 interface PostCommentReplyWithUser extends PostCommentReply {
   user: User;
+  createdFor: User;
+  createdBy: User;
+
+  _count: {
+    postReplyThumbs: number;
+  };
 }
 
 interface PostForm {
@@ -55,7 +73,6 @@ const CommentContainer = styled.div`
   margin: 22px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
 `;
 
 const CommentUser = styled.div`
@@ -66,12 +83,17 @@ const CommentUser = styled.div`
 
 const Comment = styled.p`
   font-size: 15px;
+
+  & span {
+    color: var(--blue500);
+  }
 `;
 
 const CommentInfo = styled.div`
   display: flex;
   gap: 12px;
   font-size: 11px;
+  margin-top: 12px;
 
   & span {
     color: var(--grey300);
@@ -86,8 +108,12 @@ const CommentInfo = styled.div`
 const CommentWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
   margin-left: 48px;
+  margin-top: 8px;
+
+  & > div:first-of-type {
+    margin-bottom: 24px;
+  }
 `;
 
 const PostDetail = () => {
@@ -96,9 +122,14 @@ const PostDetail = () => {
     router.query.id ? `/api/posts/${router.query.id}` : null
   );
 
+  const { data: replyData, mutate: replyMutate } = useSWR<PostReplyResponse>(
+    router.query.id ? `/api/posts/${router.query.id}/replies` : null
+  );
+
   const [thumb, { loading }] = useMutation(
     `/api/posts/${router.query.id}/thumb`
   );
+
   const onthumbClick = () => {
     if (!data) return;
     mutate(
@@ -129,10 +160,12 @@ const PostDetail = () => {
         <PostContent>
           <PostUserInfo>
             <PostProfile />
-            <div>
-              <PostUsername>{data?.post?.user?.name}</PostUsername>
-              <PostTime>3시간 전</PostTime>
-            </div>
+            <Link href={`/users/profiles/${data?.post?.user?.id}`}>
+              <div>
+                <PostUsername>{data?.post?.user?.name}</PostUsername>
+                <PostTime>{"data?.post?.createdAt"}</PostTime>
+              </div>
+            </Link>
             <div style={{ marginLeft: "auto", marginRight: "0" }}>
               <IconContainer size="20px" color="var(--grey200)">
                 <Icon.DotsVerticalOutline />
@@ -153,45 +186,84 @@ const PostDetail = () => {
             <span>추천</span>
             <span>{data?.post?._count.postThumbs}</span>
           </PostItemInfo>
-          <div>
+          <PostItemInfo>
             <div>
               <Icon.ChatOutline />
             </div>
-            <span style={{ color: "var(--grey300)" }}>댓글</span>
-            <span style={{ color: "var(--grey300)" }}>
-              {data?.post?._count.postComments}
+            <span>댓글</span>
+            <span>
+              {data?.post?._count?.postComments !== undefined
+                ? data?.post?._count?.postComments +
+                  data?.post?._count?.postCommentReplies
+                : data?.post?._count?.postCommentReplies}
             </span>
-          </div>
+          </PostItemInfo>
         </PostInfo>
       </PostContainer>
-      <CommentContainer>
-        <CommentUser>
-          <PostUserInfo>
-            <PostProfile />
-            <div>
-              <PostUsername>오비완</PostUsername>
-              <PostTime>3시간 전</PostTime>
-            </div>
-          </PostUserInfo>
-          <IconContainer size="20px" color="var(--grey200)">
-            <Icon.DotsVerticalOutline />
-          </IconContainer>
-        </CommentUser>
-        <CommentWrapper>
-          <Comment>
-            저도 마찬가지에요! 항상 군대에서 뭘 준비해야 할지 모르겠어요 ㅠㅠ{" "}
-          </Comment>
-          <CommentInfo>
-            <div>
-              <span>좋아요</span>
-              <span>2</span>
-            </div>
-            <div>
-              <span>답글쓰기</span>
-            </div>
-          </CommentInfo>
-        </CommentWrapper>
-      </CommentContainer>
+      {data?.post?.postComments?.map((comment) => (
+        <CommentContainer key={comment.id}>
+          <CommentUser>
+            <PostUserInfo>
+              <PostProfile />
+              <Link href={`/users/profiles/${comment?.user?.id}`}>
+                <div>
+                  <PostUsername>{comment?.user.name}</PostUsername>
+                  <PostTime>{"comment?.createdAt"}</PostTime>
+                </div>
+              </Link>
+            </PostUserInfo>
+            <IconContainer size="20px" color="var(--grey200)">
+              <Icon.DotsVerticalOutline />
+            </IconContainer>
+          </CommentUser>
+          <CommentWrapper>
+            <Comment>{comment?.content}</Comment>
+            <CommentInfo>
+              <div>
+                <span>좋아요</span>
+                <span>{comment?._count?.postCommentThumbs}</span>
+              </div>
+              <div>
+                <span>답글쓰기</span>
+              </div>
+            </CommentInfo>
+            {replyData?.replies.map((reply) =>
+              reply.postCommentId === comment.id ? (
+                <div key={reply.id}>
+                  <CommentUser>
+                    <PostUserInfo>
+                      <PostProfile />
+                      <Link href={`/users/profiles/${reply?.createdBy?.id}`}>
+                        <div>
+                          <PostUsername>{reply?.createdBy.name}</PostUsername>
+                          <PostTime>{"reply?.createdAt"}</PostTime>
+                        </div>
+                      </Link>
+                    </PostUserInfo>
+                    <IconContainer size="20px" color="var(--grey200)">
+                      <Icon.DotsVerticalOutline />
+                    </IconContainer>
+                  </CommentUser>
+                  <CommentWrapper>
+                    <Comment>
+                      <span>@{reply?.createdFor?.name}</span> {reply?.content}
+                    </Comment>
+                    <CommentInfo>
+                      <div>
+                        <span>좋아요</span>
+                        <span>{reply?._count.postReplyThumbs}</span>
+                      </div>
+                      <div>
+                        <span>답글쓰기</span>
+                      </div>
+                    </CommentInfo>
+                  </CommentWrapper>
+                </div>
+              ) : null
+            )}
+          </CommentWrapper>
+        </CommentContainer>
+      ))}
     </Layout>
   );
 };

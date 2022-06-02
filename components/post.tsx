@@ -32,6 +32,7 @@ export const PostUserInfo = styled.div`
 
   & > div {
     margin-right: 10px;
+    cursor: pointer;
   }
 
   & div:last-of-type {
@@ -61,6 +62,7 @@ export const PostInfo = styled.div`
   padding: 12px 22px;
   gap: 18px;
   border-top: 1px solid var(--grey100);
+  border-bottom: 1px solid var(--grey100);
 
   & div {
     font-size: 13px;
@@ -78,7 +80,7 @@ export const PostInfo = styled.div`
   }
 `;
 
-export const PostItemInfo = styled.div<{ isClicked: boolean }>`
+export const PostItemInfo = styled.div<{ isClicked?: boolean }>`
   & *,
   span {
     color: ${(props) =>

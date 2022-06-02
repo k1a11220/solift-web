@@ -26,6 +26,7 @@ async function handler(
       postComments: {
         select: {
           content: true,
+          createdAt: true,
           id: true,
           user: {
             select: {
