@@ -21,6 +21,18 @@ import useSWR from "swr";
 import { Post, PostComment, PostCommentReply, User } from "@prisma/client";
 import useMutation from "@libs/client/useMutation";
 import Link from "next/link";
+import Toolbar from "@components/toolbar";
+import Divider from "@components/divider";
+import { useEffect } from "react";
+
+interface CommentResponse {
+  ok: boolean;
+  response: PostComment;
+}
+
+interface CommentForm {
+  content: string;
+}
 
 interface PostReplyResponse {
   ok: boolean;
@@ -70,7 +82,7 @@ interface PostResponse {
 }
 
 const CommentContainer = styled.div`
-  margin: 22px;
+  margin: 22px 22px 0 22px;
   display: flex;
   flex-direction: column;
 `;
@@ -109,7 +121,6 @@ const CommentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 48px;
-  margin-top: 8px;
 
   & > div:first-of-type {
     margin-bottom: 24px;
@@ -152,6 +163,26 @@ const PostDetail = () => {
       thumb({});
     }
   };
+
+  const { register, reset } = useForm({
+    mode: "onChange",
+  });
+
+  const { ref, ...rest } = register("content", { required: true });
+
+  const [sendComment, { data: commentData, loading: commentLoading }] =
+    useMutation<CommentResponse>(`/api/posts/${router.query.id}/comments`);
+
+  const onValid = (form: CommentForm) => {
+    if (commentLoading) return;
+    sendComment(form);
+    reset();
+  };
+  useEffect(() => {
+    if (commentData && commentData.ok) {
+      reset();
+    }
+  }, [commentData, reset, mutate]);
 
   return (
     <Layout hasTabBar={false} hasHeader>
@@ -264,6 +295,8 @@ const PostDetail = () => {
           </CommentWrapper>
         </CommentContainer>
       ))}
+      <Divider />
+      <Toolbar hasInput onValid={onValid} {...rest} />
     </Layout>
   );
 };
