@@ -1,10 +1,26 @@
 import Chip from "@components/chip";
+import CommunityPost from "@components/community-post";
 import FloatingBtn from "@components/floating-btn";
 import Layout from "@components/layout";
-import Post from "@components/post";
 import styled from "@emotion/styled";
+import { Post, User } from "@prisma/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import useSWR from "swr";
+
+interface PostWithUser extends Post {
+  user: User;
+  _count: {
+    postThumbs: number;
+    postComments: number;
+    postCommentReplies: number;
+  };
+}
+
+interface PostsResponse {
+  ok: boolean;
+  posts: PostWithUser[];
+}
 
 const Container = styled.div``;
 
@@ -46,6 +62,8 @@ const Chips = styled.div`
 
 const Community = () => {
   const router = useRouter();
+  const { data } = useSWR<PostsResponse>(`/api/posts`);
+  console.log(data);
   return (
     <Layout hasTabBar>
       <Container>
@@ -59,16 +77,21 @@ const Community = () => {
           <Chip isActive={false} content={"생활"} />
         </Chips>
         <PostList>
-          <Link href={"/community/post/1"}>
-            <div>
-              <Post />
-            </div>
-          </Link>
-          <Link href={"/community/post/1"}>
-            <div>
-              <Post />
-            </div>
-          </Link>
+          {data?.posts.map((post) => (
+            <CommunityPost
+              key={post.id}
+              id={post.id.toString()}
+              name={post.user.name}
+              avatar={"post.user.avatar"}
+              createdAt={post.createdAt}
+              title={post.title}
+              content={post.content}
+              postComments={post._count.postComments}
+              postReplies={post._count.postCommentReplies}
+              postThumbs={post._count.postThumbs}
+              category={post.category}
+            />
+          ))}
         </PostList>
         <FloatingBtn
           type="Write"

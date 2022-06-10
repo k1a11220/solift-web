@@ -1,6 +1,19 @@
 import styled from "@emotion/styled";
 import * as Icon from "@icons";
-import IconContainer from "./icon-container";
+import Link from "next/link";
+
+interface CommunityPostProps {
+  id: string;
+  name: string;
+  avatar: string;
+  createdAt: Date;
+  title: string;
+  content: string;
+  postComments: number;
+  postReplies: number;
+  postThumbs: number;
+  category: string;
+}
 
 export const PostContainer = styled.div`
   background-color: var(--white);
@@ -94,45 +107,54 @@ export const PostImg = styled.div`
   border-radius: 10px;
 `;
 
-const Post = () => {
+const CommunityPost = ({
+  name,
+  avatar,
+  createdAt,
+  title,
+  content,
+  postComments,
+  postReplies,
+  postThumbs,
+  category,
+  id,
+}: CommunityPostProps) => {
   return (
-    <PostContainer>
-      <PostContent>
-        <PostUserInfo>
-          <PostProfile />
-          <div>
-            <PostUsername>오비완</PostUsername>
-            <PostTime>3시간 전</PostTime>
-          </div>
-        </PostUserInfo>
-        <h3>군대에서 코딩 공부 하는 방법</h3>
-        <PostMain>
-          제가 군대에 가게되어서 공부를 놓게 될 것 같습니다. 그래서 그런데 다른
-          공부라면 책만 있어도 공부가 되겠지만, 이런 경우는 싸지방을 가서 코딩을
-          하고 싶어도 비쥬얼 스튜디오나, 이클립스 같은 프로그램을 깔 수 없는
-          것으로 아는데, 코딩을 웹으로 하는 사이트나 그 외의 대안을 추천해주시면
-          좋겠습니다.
-        </PostMain>
-        <PostImg />
-      </PostContent>
-      <PostInfo>
-        <div>
-          <div>
-            <Icon.ThumbUpOutline />
-          </div>
-          <span>추천</span>
-          <span>2</span>
-        </div>
-        <div>
-          <div>
-            <Icon.ChatOutline />
-          </div>
-          <span>댓글</span>
-          <span>21</span>
-        </div>
-      </PostInfo>
-    </PostContainer>
+    <Link href={`/community/post/${id}`}>
+      <PostContainer style={{ cursor: "pointer" }}>
+        <PostContent>
+          <PostUserInfo>
+            <PostProfile />
+            <div>
+              <PostUsername>{name}</PostUsername>
+              <PostTime>{createdAt?.toString()}</PostTime>
+            </div>
+          </PostUserInfo>
+          <h3>{title}</h3>
+          <PostMain>{content}</PostMain>
+          {/* <PostImg /> */}
+        </PostContent>
+        <PostInfo>
+          <PostItemInfo
+          // isClicked={data?.isThumb === undefined ? false : data?.isThumb}
+          >
+            <div>
+              <Icon.ThumbUpOutline />
+            </div>
+            <span>추천</span>
+            <span>{postThumbs}</span>
+          </PostItemInfo>
+          <PostItemInfo>
+            <div>
+              <Icon.ChatOutline />
+            </div>
+            <span>댓글</span>
+            <span>{postComments + postReplies}</span>
+          </PostItemInfo>
+        </PostInfo>
+      </PostContainer>
+    </Link>
   );
 };
 
-export default Post;
+export default CommunityPost;

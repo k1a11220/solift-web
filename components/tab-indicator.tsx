@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
-import CardSm from "../card-sm";
+import CardSm from "./card-sm";
 
 const Tabs = styled.div``;
 

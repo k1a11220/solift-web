@@ -12,7 +12,7 @@ import {
   PostTime,
   PostUserInfo,
   PostUsername,
-} from "@components/post";
+} from "@components/community-post";
 import styled from "@emotion/styled";
 import IconContainer from "@components/icon-container";
 import { useRouter } from "next/router";
@@ -194,7 +194,7 @@ const PostDetail = () => {
             <Link href={`/users/profiles/${data?.post?.user?.id}`}>
               <div>
                 <PostUsername>{data?.post?.user?.name}</PostUsername>
-                <PostTime>{"data?.post?.createdAt"}</PostTime>
+                <PostTime>{data?.post?.createdAt.toString()}</PostTime>
               </div>
             </Link>
             <div style={{ marginLeft: "auto", marginRight: "0" }}>
@@ -239,7 +239,7 @@ const PostDetail = () => {
               <Link href={`/users/profiles/${comment?.user?.id}`}>
                 <div>
                   <PostUsername>{comment?.user.name}</PostUsername>
-                  <PostTime>{"comment?.createdAt"}</PostTime>
+                  <PostTime>{comment?.createdAt.toString()}</PostTime>
                 </div>
               </Link>
             </PostUserInfo>
@@ -267,7 +267,7 @@ const PostDetail = () => {
                       <Link href={`/users/profiles/${reply?.createdBy?.id}`}>
                         <div>
                           <PostUsername>{reply?.createdBy.name}</PostUsername>
-                          <PostTime>{"reply?.createdAt"}</PostTime>
+                          <PostTime>{reply?.createdAt.toString()}</PostTime>
                         </div>
                       </Link>
                     </PostUserInfo>

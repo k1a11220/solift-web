@@ -31,10 +31,9 @@ async function handler(
   }
   if (req.method === "GET") {
     const {
-      query: { content, category },
+      query: { id, content, category },
+      session: { user },
     } = req;
-    const parsedcontent = parseFloat(content.toString());
-    const parsedLongitue = parseFloat(category.toString());
     const posts = await client.post.findMany({
       include: {
         user: {
@@ -49,6 +48,11 @@ async function handler(
             postThumbs: true,
             postComments: true,
             postCommentReplies: true,
+          },
+        },
+        postThumbs: {
+          select: {
+            userId: true,
           },
         },
       },
