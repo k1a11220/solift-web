@@ -19,3 +19,4 @@ export * from "./search-outline";
 export * from "./photograph-outline";
 export * from "./check-outline";
 export * from "./arrow-up";
+export * from "./create";

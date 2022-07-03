@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import IconContainer from "./icon-container";
 
 interface FloatingBtnProps {
-  type: "Write" | "Search";
+  type: "Write" | "Search" | "Create";
   action: () => void;
 }
 
@@ -23,7 +23,7 @@ const BtnContainer = styled.div`
   width: 100vw;
   max-width: 36rem;
   position: fixed;
-  bottom: calc(var(--tab-height) + 14px);
+  bottom: calc(var(--tab-height) + 22px);
   display: flex;
   justify-content: flex-end;
 `;
@@ -40,6 +40,10 @@ const FloatingBtn = ({ type, action }: FloatingBtnProps) => {
         ) : type === "Search" ? (
           <IconContainer size="24px" color="var(--white)">
             <Icon.SearchOutline />
+          </IconContainer>
+        ) : type === "Create" ? (
+          <IconContainer size="24px" color="var(--white)">
+            <Icon.Create />
           </IconContainer>
         ) : null}
       </Container>

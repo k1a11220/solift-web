@@ -1,20 +1,24 @@
 import styled from "@emotion/styled";
 import type { NextPage } from "next";
-import TabIndicator from "@components/tab-indicator";
 import Layout from "@components/layout";
 import useUser from "@libs/client/useUser";
+import Image from "next/image";
+import FloatingBtn from "@components/floating-btn";
+import { useRouter } from "next/router";
 
 const Header = styled.header`
   display: flex;
   align-items: flex-end;
-  height: 70px;
-  margin: 12px 22px;
+  padding: 8px 22px;
+  font-family: "Kanit", sans-serif;
+  position: sticky;
+  top: 0;
+  background-color: var(--white);
 `;
 
 const Logo = styled.div`
   color: var(--blue500);
-  font-size: 26px;
-  font-weight: 600;
+  font-size: 27px;
 `;
 
 const SlideContainer = styled.div`
@@ -64,36 +68,43 @@ const Title = styled.p`
   width: 100%;
 `;
 
+const EmptyContainer = styled.div`
+  display: flex;
+  gap: 16px;
+  height: calc(100vh - 109px);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  & h2 {
+    font-size: 18px;
+    font-weight: 500;
+  }
+`;
+
 const Home: NextPage = () => {
+  const router = useRouter();
   const { user, isLoading } = useUser();
   // console.log(user);
   return (
     <Layout hasTabBar>
       <div>
         <Header>
-          <Logo>SOLIFT</Logo>
+          <Logo>solift</Logo>
         </Header>
-        <SlideContainer>
-          <Slide>
-            <SlideContent>
-              <Label>이벤트</Label>
-              <Title>
-                아웃백 방문 인증하고 10,000원 <br />
-                할인받기
-              </Title>
-            </SlideContent>
-          </Slide>
-          <Slide>
-            <SlideContent>
-              <Label>이벤트</Label>
-              <Title>
-                아웃백 방문 인증하고 10,000원 <br />
-                할인받기
-              </Title>
-            </SlideContent>
-          </Slide>
-        </SlideContainer>
-        <TabIndicator />
+        <EmptyContainer>
+          <Image
+            src="/scope.png"
+            alt="Picture of the author"
+            width={56}
+            height={56}
+          />
+          <h2>새로운 목표를 만들어봐요</h2>
+        </EmptyContainer>
+        <FloatingBtn
+          type="Create"
+          action={() => router.push("/community/write")}
+        />
       </div>
     </Layout>
   );
