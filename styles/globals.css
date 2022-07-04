@@ -156,3 +156,12 @@ button {
   cursor: pointer;
   outline: none;
 }
+
+input[type="date"],
+input[type="time"] {
+  -webkit-appearance: none;
+}
+
+input::-webkit-date-and-time-value {
+  text-align: left;
+}

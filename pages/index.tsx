@@ -103,7 +103,7 @@ const Home: NextPage = () => {
         </EmptyContainer>
         <FloatingBtn
           type="Create"
-          action={() => router.push("/community/write")}
+          action={() => router.push("/objective/create")}
         />
       </div>
     </Layout>

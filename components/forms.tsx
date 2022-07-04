@@ -15,6 +15,7 @@ export const StyledInput = styled.input`
   color: var(--grey500);
   border: 1px solid var(--grey200);
   margin-bottom: auto;
+  background-color: var(--white);
 
   &::placeholder {
     color: var(--grey200);
