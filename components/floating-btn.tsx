@@ -6,6 +6,7 @@ import IconContainer from "./icon-container";
 interface FloatingBtnProps {
   type: "Write" | "Search" | "Create";
   action: () => void;
+  hasTabbar?: boolean;
 }
 
 const Container = styled.button`
@@ -19,19 +20,20 @@ const Container = styled.button`
   margin-right: 22px;
 `;
 
-const BtnContainer = styled.div`
+const BtnContainer = styled.div<{ hasTabbar: boolean }>`
   width: 100vw;
   max-width: 36rem;
   position: fixed;
-  bottom: calc(var(--tab-height) + 22px);
+  bottom: ${(props) =>
+    props.hasTabbar ? "calc(var(--tab-height) + 22px)" : "22px"};
   display: flex;
   justify-content: flex-end;
 `;
 
-const FloatingBtn = ({ type, action }: FloatingBtnProps) => {
+const FloatingBtn = ({ type, action, hasTabbar = true }: FloatingBtnProps) => {
   const router = useRouter();
   return (
-    <BtnContainer>
+    <BtnContainer hasTabbar={hasTabbar}>
       <Container onClick={action}>
         {type === "Write" ? (
           <IconContainer size="24px" color="var(--white)">

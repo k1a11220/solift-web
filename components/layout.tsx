@@ -13,6 +13,7 @@ const Container = styled.div`
   max-width: 36rem;
   margin: auto;
   width: calc(100%);
+  height: 100%;
 `;
 
 const Layout = ({ children, hasTabBar, hasHeader }: LayoutProps) => {

@@ -8,7 +8,7 @@ import useMutation from "@libs/client/useMutation";
 import { Objective } from "@prisma/client";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface ObjectiveForm {
@@ -59,6 +59,12 @@ const Create: NextPage = () => {
     objective({ ...data });
   };
 
+  useEffect(() => {
+    if (data && data.ok) {
+      router.push(`/objective/${data.objective.id}`);
+    }
+  }, [data, router]);
+
   const [isGoalDone, setIsGoalDone] = useState(false);
 
   return (
@@ -81,29 +87,30 @@ const Create: NextPage = () => {
                 {...register("deadline")}
                 type={"date"}
                 placeholder={new Date().toISOString().split("T")[0]}
+                defaultValue={new Date().toISOString().split("T")[0]}
               />
             </HideForm>
-
             {isGoalDone ? (
               <>
                 <CTA type="submit" disabled={false} autoFocus={true}>
                   완료
                 </CTA>
               </>
-            ) : (
-              <>
-                <CTA
-                  type="button"
-                  disabled={loading || !isDirty || !isValid}
-                  autoFocus={true}
-                  onClick={() => setIsGoalDone(true)}
-                >
-                  다음으로
-                </CTA>
-              </>
-            )}
+            ) : null}
           </>
         </StyledForm>
+        {isGoalDone ? null : (
+          <>
+            <CTA
+              type="button"
+              disabled={loading || !isDirty || !isValid}
+              autoFocus={true}
+              onClick={() => setIsGoalDone(true)}
+            >
+              다음으로
+            </CTA>
+          </>
+        )}
       </Container>
     </Layout>
   );
