@@ -9,6 +9,7 @@ import { Objective } from "@prisma/client";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import { useDate } from "utils/useDate";
 
 interface ObjectiveResponse {
   ok: boolean;
@@ -86,14 +87,7 @@ const ObjectiveDetail = () => {
           </div>
           <div>
             <p>마감일</p>
-            <p>
-              {data
-                ? data?.objective?.deadline
-                    .toString()
-                    .split("T")[0]
-                    .replaceAll("-", "/")
-                : ""}
-            </p>
+            <p>{data ? useDate(data?.objective?.deadline) : ""}</p>
           </div>
         </InfoContainer>
         <Empty>

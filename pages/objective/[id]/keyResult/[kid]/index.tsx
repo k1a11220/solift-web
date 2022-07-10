@@ -1,30 +1,40 @@
+import EmptyContainer from "@components/empty-container";
 import FloatingBtn from "@components/floating-btn";
 import { Header } from "@components/header";
 import HeaderBtn from "@components/header-btn";
 import Layout from "@components/layout";
 import TitleLg from "@components/title-lg";
+import TitleLgBar from "@components/title-lg-bar";
 import styled from "@emotion/styled";
-import { KeyResult } from "@prisma/client";
+import { KeyResult, Objective } from "@prisma/client";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import { useDate } from "utils/useDate";
+
+interface KeyResultWithObjective extends KeyResult {
+  objective: Objective;
+}
 
 interface KeyResultResponse {
   ok: boolean;
-  keyResult: KeyResult;
+  keyResult: KeyResultWithObjective;
 }
 
 const Container = styled.div`
   margin: var(--margin-side);
 `;
 
-const KeyResult = () => {
+const Empty = styled.div`
+  height: calc(100vh - 49px - 240px);
+`;
+
+const KeyResultDetail = () => {
   const router = useRouter();
   const { data, mutate } = useSWR<KeyResultResponse>(
     router.query.id
       ? `/api/objectives/${router.query.id}/keyResults/${router.query.kid}`
       : null
   );
-  console.log(router.query.id, router.query.kid, data);
   return (
     <Layout hasTabBar={false} hasHeader>
       <Header
@@ -42,7 +52,22 @@ const KeyResult = () => {
         }
       />
       <Container>
-        <TitleLg title={data ? data?.keyResult?.name : ""} hasDetail={true} />
+        <TitleLgBar
+          title={data ? data?.keyResult?.name : ""}
+          subtitle={data ? data?.keyResult?.objective.name : ""}
+          date={data ? useDate(data?.keyResult?.deadline) : ""}
+          progress={88}
+        />
+        <Empty>
+          <EmptyContainer
+            description={
+              <p>
+                세부과제를 달성할 수 있는 <br /> 목표를 만들어봐요
+              </p>
+            }
+            image="/satellite.png"
+          />
+        </Empty>
       </Container>
       <FloatingBtn
         type="Create"
@@ -57,4 +82,4 @@ const KeyResult = () => {
   );
 };
 
-export default KeyResult;
+export default KeyResultDetail;
