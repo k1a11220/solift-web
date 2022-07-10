@@ -73,7 +73,7 @@ const KeyResultDetail = () => {
         type="Create"
         action={() =>
           router.push(
-            `/objective/${router.query.id}/keyResult/${router.query.kid}/create`
+            `/objective/${router.query.id}/keyResult/${router.query.kid}/initiative/create`
           )
         }
         hasTabbar={false}
