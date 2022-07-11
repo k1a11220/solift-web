@@ -39,6 +39,13 @@ async function handler(
           avatar: true,
         },
       },
+      initiatives: {
+        select: {
+          id: true,
+          name: true,
+          hasDone: true,
+        },
+      },
     },
   });
   res.json({

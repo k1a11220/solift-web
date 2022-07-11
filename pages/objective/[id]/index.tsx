@@ -1,3 +1,4 @@
+import CardMd from "@components/card-md";
 import EmptyContainer from "@components/empty-container";
 import FloatingBtn from "@components/floating-btn";
 import { Header } from "@components/header";
@@ -5,16 +6,21 @@ import HeaderBtn from "@components/header-btn";
 import Layout from "@components/layout";
 import TitleLg from "@components/title-lg";
 import styled from "@emotion/styled";
-import { KeyResult, Objective } from "@prisma/client";
+import { Initiative, KeyResult, Objective } from "@prisma/client";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { useDate } from "utils/useDate";
 
+interface KeyResultWithInitiative extends KeyResult {
+  initiatives: Initiative;
+}
+
 interface ObjectiveResponse {
   ok: boolean;
   objective: Objective;
-  keyResults: KeyResult[];
+  keyResults: KeyResultWithInitiative[];
 }
 
 const Container = styled.div`
@@ -58,12 +64,18 @@ const Empty = styled.div`
   height: calc(100vh - 49px - 240px);
 `;
 
+const CardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+`;
+
 const ObjectiveDetail = () => {
   const router = useRouter();
   const { data, mutate } = useSWR<ObjectiveResponse>(
     router.query.id ? `/api/objectives/${router.query.id}` : null
   );
-  console.log(data);
   return (
     <Layout hasTabBar={false} hasHeader>
       <Header
@@ -92,21 +104,47 @@ const ObjectiveDetail = () => {
             <p>{data ? useDate(data?.objective?.deadline) : ""}</p>
           </div>
         </InfoContainer>
-        {data?.keyResults?.map((keyResult) => (
-          <div>
-            <p>{keyResult.name}</p>
-          </div>
-        ))}
-        <Empty>
-          <EmptyContainer
-            description={
-              <p>
-                목표를 만드셨군요! <br /> 이젠 세부과제를 만들어봐요
-              </p>
-            }
-            image="/antenna.png"
-          />
-        </Empty>
+        {data?.keyResults.length === 0 ? (
+          <Empty>
+            <EmptyContainer
+              description={
+                <p>
+                  목표를 만드셨군요! <br /> 이젠 세부과제를 만들어봐요
+                </p>
+              }
+              image="/antenna.png"
+            />
+          </Empty>
+        ) : (
+          <CardContainer>
+            {data?.keyResults?.map((keyResult, index) => (
+              <Link
+                href={`/objective/${router.query.id}/keyResult/${keyResult.id}`}
+              >
+                <div>
+                  <CardMd
+                    title={keyResult.name}
+                    date={useDate(keyResult.deadline)}
+                    progress={
+                      keyResult.initiatives.length === 0
+                        ? 0
+                        : Number(
+                            parseFloat(
+                              (keyResult.initiatives.filter(
+                                (value) => value.hasDone === true
+                              ).length /
+                                keyResult.initiatives.length) *
+                                100
+                            ).toFixed(1)
+                          )
+                    }
+                    key={index}
+                  />
+                </div>
+              </Link>
+            ))}
+          </CardContainer>
+        )}
       </Container>
       <FloatingBtn
         type="Create"

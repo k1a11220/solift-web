@@ -21,3 +21,4 @@ export * from "./check-outline";
 export * from "./arrow-up";
 export * from "./create";
 export * from "./calendar-outline";
+export * from "./check-circle-outline";
