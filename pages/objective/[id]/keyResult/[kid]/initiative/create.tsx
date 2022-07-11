@@ -63,7 +63,9 @@ const Create: NextPage = () => {
 
   useEffect(() => {
     if (data && data.ok) {
-      console.log(data);
+      router.push(
+        `/objective/${router.query.id}/keyResult/${router.query.kid}`
+      );
     }
   }, [data, router]);
 
