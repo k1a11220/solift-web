@@ -14,7 +14,7 @@ import useSWR from "swr";
 import { useDate } from "utils/useDate";
 
 interface KeyResultWithInitiative extends KeyResult {
-  initiatives: Initiative;
+  initiatives: Initiative[];
 }
 
 interface ObjectiveResponse {
@@ -129,12 +129,12 @@ const ObjectiveDetail = () => {
                       keyResult.initiatives.length === 0
                         ? 0
                         : Number(
-                            parseFloat(
+                            (
                               (keyResult.initiatives.filter(
                                 (value) => value.hasDone === true
                               ).length /
                                 keyResult.initiatives.length) *
-                                100
+                              100
                             ).toFixed(1)
                           )
                     }
