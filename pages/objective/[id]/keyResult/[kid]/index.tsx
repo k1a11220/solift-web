@@ -6,7 +6,7 @@ import Layout from "@components/layout";
 import TitleLg from "@components/title-lg";
 import TitleLgBar from "@components/title-lg-bar";
 import styled from "@emotion/styled";
-import { KeyResult, Objective } from "@prisma/client";
+import { Initiative, KeyResult, Objective } from "@prisma/client";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { useDate } from "utils/useDate";
@@ -18,6 +18,7 @@ interface KeyResultWithObjective extends KeyResult {
 interface KeyResultResponse {
   ok: boolean;
   keyResult: KeyResultWithObjective;
+  initiatives: Initiative;
 }
 
 const Container = styled.div`
@@ -56,18 +57,38 @@ const KeyResultDetail = () => {
           title={data ? data?.keyResult?.name : ""}
           subtitle={data ? data?.keyResult?.objective.name : ""}
           date={data ? useDate(data?.keyResult?.deadline) : ""}
-          progress={88}
+          progress={
+            data
+              ? data?.initiatives?.length === 0
+                ? 0
+                : Number(
+                    parseFloat(
+                      (data?.initiatives?.filter(
+                        (value) => value.hasDone === true
+                      ).length /
+                        data?.initiatives?.length) *
+                        100
+                    ).toFixed(1)
+                  )
+              : 0
+          }
         />
-        <Empty>
-          <EmptyContainer
-            description={
-              <p>
-                세부과제를 달성할 수 있는 <br /> 목표를 만들어봐요
-              </p>
-            }
-            image="/satellite.png"
-          />
-        </Empty>
+        {data?.initiatives.length === 0 ? (
+          <Empty>
+            <EmptyContainer
+              description={
+                <p>
+                  세부과제를 달성할 수 있는 <br /> 목표를 만들어봐요
+                </p>
+              }
+              image="/satellite.png"
+            />
+          </Empty>
+        ) : (
+          data?.initiatives?.map((initiative, index) => (
+            <div>{initiative.name}</div>
+          ))
+        )}
       </Container>
       <FloatingBtn
         type="Create"

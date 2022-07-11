@@ -31,9 +31,25 @@ async function handler(
       },
     },
   });
+  const initiatives = await client.initiative.findMany({
+    where: {
+      keyResult: {
+        id: +kid.toString(),
+      },
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+  });
   res.json({
     ok: true,
     keyResult,
+    initiatives,
   });
 }
 

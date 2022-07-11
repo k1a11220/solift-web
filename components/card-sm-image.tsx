@@ -28,7 +28,7 @@ const ImgContainer = styled.div`
   border-radius: 4px;
 `;
 
-const CardSm = () => {
+const CardSmImage = () => {
   return (
     <Container>
       <div>
@@ -40,4 +40,4 @@ const CardSm = () => {
   );
 };
 
-export default CardSm;
+export default CardSmImage;
