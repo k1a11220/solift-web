@@ -5,7 +5,7 @@ import HeaderBtn from "@components/header-btn";
 import Layout from "@components/layout";
 import TitleLg from "@components/title-lg";
 import styled from "@emotion/styled";
-import { Objective } from "@prisma/client";
+import { KeyResult, Objective } from "@prisma/client";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import useSWR from "swr";
@@ -14,6 +14,7 @@ import { useDate } from "utils/useDate";
 interface ObjectiveResponse {
   ok: boolean;
   objective: Objective;
+  keyResults: KeyResult[];
 }
 
 const Container = styled.div`
@@ -62,6 +63,7 @@ const ObjectiveDetail = () => {
   const { data, mutate } = useSWR<ObjectiveResponse>(
     router.query.id ? `/api/objectives/${router.query.id}` : null
   );
+  console.log(data);
   return (
     <Layout hasTabBar={false} hasHeader>
       <Header
@@ -90,6 +92,11 @@ const ObjectiveDetail = () => {
             <p>{data ? useDate(data?.objective?.deadline) : ""}</p>
           </div>
         </InfoContainer>
+        {data?.keyResults?.map((keyResult) => (
+          <div>
+            <p>{keyResult.name}</p>
+          </div>
+        ))}
         <Empty>
           <EmptyContainer
             description={
