@@ -1,3 +1,4 @@
+import CardSm from "@components/card-sm";
 import EmptyContainer from "@components/empty-container";
 import FloatingBtn from "@components/floating-btn";
 import { Header } from "@components/header";
@@ -18,7 +19,7 @@ interface KeyResultWithObjective extends KeyResult {
 interface KeyResultResponse {
   ok: boolean;
   keyResult: KeyResultWithObjective;
-  initiatives: Initiative;
+  initiatives: Initiative[];
 }
 
 const Container = styled.div`
@@ -27,6 +28,13 @@ const Container = styled.div`
 
 const Empty = styled.div`
   height: calc(100vh - 49px - 240px);
+`;
+
+const CardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 12px;
 `;
 
 const KeyResultDetail = () => {
@@ -62,12 +70,12 @@ const KeyResultDetail = () => {
               ? data?.initiatives?.length === 0
                 ? 0
                 : Number(
-                    parseFloat(
+                    (
                       (data?.initiatives?.filter(
                         (value) => value.hasDone === true
                       ).length /
                         data?.initiatives?.length) *
-                        100
+                      100
                     ).toFixed(1)
                   )
               : 0
@@ -85,9 +93,16 @@ const KeyResultDetail = () => {
             />
           </Empty>
         ) : (
-          data?.initiatives?.map((initiative, index) => (
-            <div>{initiative.name}</div>
-          ))
+          <CardContainer>
+            {data?.initiatives?.map((initiative, index) => (
+              <CardSm
+                title={initiative?.name}
+                date={useDate(initiative?.deadline)}
+                isDone={initiative?.hasDone}
+                key={index}
+              />
+            ))}
+          </CardContainer>
         )}
       </Container>
       <FloatingBtn
