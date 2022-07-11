@@ -76,6 +76,7 @@ const ObjectiveDetail = () => {
   const { data, mutate } = useSWR<ObjectiveResponse>(
     router.query.id ? `/api/objectives/${router.query.id}` : null
   );
+  console.log(data);
   return (
     <Layout hasTabBar={false} hasHeader>
       <Header
@@ -97,7 +98,7 @@ const ObjectiveDetail = () => {
         <InfoContainer>
           <div>
             <p>진행도</p>
-            <p>0%</p>
+            <p>100%</p>
           </div>
           <div>
             <p>마감일</p>
@@ -120,6 +121,7 @@ const ObjectiveDetail = () => {
             {data?.keyResults?.map((keyResult, index) => (
               <Link
                 href={`/objective/${router.query.id}/keyResult/${keyResult.id}`}
+                key={index}
               >
                 <div>
                   <CardMd
@@ -138,7 +140,6 @@ const ObjectiveDetail = () => {
                             ).toFixed(1)
                           )
                     }
-                    key={index}
                   />
                 </div>
               </Link>
