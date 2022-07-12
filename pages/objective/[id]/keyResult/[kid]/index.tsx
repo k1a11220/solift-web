@@ -7,9 +7,11 @@ import Layout from "@components/layout";
 import TitleLg from "@components/title-lg";
 import TitleLgBar from "@components/title-lg-bar";
 import styled from "@emotion/styled";
+import useMutation from "@libs/client/useMutation";
 import { Initiative, KeyResult, Objective } from "@prisma/client";
 import { useRouter } from "next/router";
-import useSWR from "swr";
+import { useEffect, useState } from "react";
+import useSWR, { mutate, useSWRConfig } from "swr";
 import { useDate } from "utils/useDate";
 
 interface KeyResultWithObjective extends KeyResult {
@@ -39,11 +41,29 @@ const CardContainer = styled.div`
 
 const KeyResultDetail = () => {
   const router = useRouter();
-  const { data, mutate } = useSWR<KeyResultResponse>(
+  // const [currentInitiativeId, setCurrentInitiativeId] = useState(0);
+  const { data: keyResultData } = useSWR<KeyResultResponse>(
     router.query.id
       ? `/api/objectives/${router.query.id}/keyResults/${router.query.kid}`
       : null
   );
+
+  // const [clickHasDone, { data }] = useMutation(
+  //   `/api/objectives/${router.query.id}/keyResults/${router.query.kid}/initiative/${currentInitiativeId}`
+  // );
+
+  // const { data: initiativeData, mutate } = useSWR(
+  //   router.query.id
+  //     ? `/api/objectives/${router.query.id}/keyResults/${router.query.kid}/initiative/${currentInitiativeId}`
+  //     : null
+  // );
+
+  // const clickInitiative = (id: number, hasDone: boolean) => {
+  //   setCurrentInitiativeId(id);
+  //   clickHasDone({ id, hasDone });
+  //   mutate(hasDone);
+  // };
+
   return (
     <Layout hasTabBar={false} hasHeader>
       <Header
@@ -62,26 +82,30 @@ const KeyResultDetail = () => {
       />
       <Container>
         <TitleLgBar
-          title={data ? data?.keyResult?.name : ""}
-          subtitle={data ? data?.keyResult?.objective.name : ""}
-          date={data ? useDate(data?.keyResult?.deadline) : ""}
+          title={keyResultData ? keyResultData?.keyResult?.name : ""}
+          subtitle={
+            keyResultData ? keyResultData?.keyResult?.objective.name : ""
+          }
+          date={
+            keyResultData ? useDate(keyResultData?.keyResult?.deadline) : ""
+          }
           progress={
-            data
-              ? data?.initiatives?.length === 0
+            keyResultData
+              ? keyResultData?.initiatives?.length === 0
                 ? 0
                 : Number(
                     (
-                      (data?.initiatives?.filter(
+                      (keyResultData?.initiatives?.filter(
                         (value) => value.hasDone === true
                       ).length /
-                        data?.initiatives?.length) *
+                        keyResultData?.initiatives?.length) *
                       100
                     ).toFixed(1)
                   )
               : 0
           }
         />
-        {data?.initiatives.length === 0 ? (
+        {keyResultData?.initiatives.length === 0 ? (
           <Empty>
             <EmptyContainer
               description={
@@ -94,12 +118,17 @@ const KeyResultDetail = () => {
           </Empty>
         ) : (
           <CardContainer>
-            {data?.initiatives?.map((initiative, index) => (
+            {keyResultData?.initiatives?.map((initiative) => (
               <CardSm
                 title={initiative?.name}
                 date={useDate(initiative?.deadline)}
-                isDone={initiative?.hasDone}
-                key={index}
+                hasDone={initiative?.hasDone}
+                key={initiative?.id}
+                // onClick={() =>
+                //   clickInitiative(initiative?.id, initiative?.hasDone)
+                // }
+                router={router}
+                id={initiative?.id}
               />
             ))}
           </CardContainer>

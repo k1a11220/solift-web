@@ -163,7 +163,6 @@ const PostDetail = () => {
       thumb({});
     }
   };
-
   const { register, reset } = useForm({
     mode: "onChange",
   });

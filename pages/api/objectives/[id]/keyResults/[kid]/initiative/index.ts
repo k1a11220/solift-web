@@ -32,10 +32,14 @@ async function handler(
   }
   if (req.method === "GET") {
     const {
-      query: { id },
+      query: { kid },
       session: { user },
     } = req;
     const initiatives = await client.initiative.findMany({
+      where: {
+        keyResult: { id: +kid.toString() },
+        user: { id: user?.id },
+      },
       include: {
         user: {
           select: {
