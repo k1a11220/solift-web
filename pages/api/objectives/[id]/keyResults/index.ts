@@ -24,6 +24,7 @@ async function handler(
             id: user?.id,
           },
         },
+        progress: 0,
       },
     });
     res.json({

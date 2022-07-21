@@ -133,6 +133,7 @@ model Objective {
   keyResults KeyResult[]
   deadline   DateTime
   hasDone    Boolean
+  progress   Int?
 }
 
 model KeyResult {
@@ -147,6 +148,7 @@ model KeyResult {
   initiatives Initiative[]
   deadline    DateTime
   hasDone     Boolean
+  progress    Int?
 }
 
 model Initiative {
